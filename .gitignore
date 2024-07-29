@@ -1,0 +1,8 @@
+happy_birthday-front/node_modules
+happy_birthday-front/.env
+happy_birthday-front/.idea/
+
+happy-birthday-back/node_modules
+happy-birthday-back/.DS_Store
+happy-birthday-back/.env
+happy-birthday-back/.idea/
