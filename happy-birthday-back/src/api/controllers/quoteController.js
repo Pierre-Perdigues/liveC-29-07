@@ -1,7 +1,7 @@
 const multer = require('multer');
 const path = require('path');
 const fs = require('fs');
-const Quotes = require('../models/quotes'); 
+const Quotes = require('../models/quotes');
 
 const upload = multer({ dest: 'uploads/' });
 exports.uploadCSV = upload.single('file');
@@ -31,8 +31,50 @@ exports.getRandomQuote = async (req, res) => {
   }
 };
 
+exports.getAllQuotes = async (req, res) => {
+  try {
+    // Récupérer toutes les citations
+    const quotes = await Quotes.findAll();
+    if (quotes.length === 0) {
+      return res.status(404).json({ error: 'No quotes found' });
+    }
+    res.json(quotes);
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
+};
 
-exports.addQuote = async (req, res) => {
+exports.updateQuotes = async (req, res) => {
+  try {
+    // Récupérer toutes les citations
+    const quotes = await Quotes.findByPk(req.params.id);
+    if (!quotes) {
+      throw new Error('Compte not found');
+    }
+    console.log(req.body);
+    await quotes.update(req.body)
+    res.json(quotes);
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
+};
+
+exports.deleteQuote = async (req, res) => {
+  try {
+    // Récupérer toutes les citations
+    const quotes = await Quotes.findByPk(req.params.id);
+    if (!quotes) {
+      throw new Error('Compte not found');
+    }
+    await quotes.destroy()
+    res.json("delete");
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
+};
+
+
+exports.addQuoteCSV = async (req, res) => {
   if (!req.file) {
     return res.status(400).send('No file uploaded.');
   }
@@ -50,6 +92,17 @@ exports.addQuote = async (req, res) => {
     }
     fs.unlinkSync(filePath); // Supprimer le fichier après traitement
     res.status(200).send('File processed successfully');
+  } catch (error) {
+    console.log(error);
+    res.status(500).send('Error processing file');
+  }
+};
+
+exports.addQuote = async (req, res) => {
+  try {
+    console.log(req.body);
+    await Quotes.create(req.body);
+    res.status(200).json('create');
   } catch (error) {
     console.log(error);
     res.status(500).send('Error processing file');

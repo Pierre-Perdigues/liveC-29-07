@@ -1,4 +1,5 @@
 import { useState, useEffect } from 'react';
+import Cookies from 'js-cookie';
 
 import HeaderComponent from './HeaderComponent/Header';
 import QuoteOnlyComponent from './QuoteOnlyComponent/QuoteOnly';
@@ -20,6 +21,8 @@ function App() {
   const [CurrentBirthday, setCurrentBirthday] = useState();
   const [CurrentIndex, setCurrentIndex] = useState(0);
   const [CurrentColor, setCurrentColor] = useState(colorsList[0]);
+
+  const token = Cookies.get('token');
 
   useEffect(() => {
     getTodaysBirthday()
@@ -84,7 +87,8 @@ function App() {
       ) : (
         <QuoteOnlyComponent currentColor={CurrentColor} />
       )}
-      <FooterComponent /> {/* Add FooterComponent */}
+      {token? (<FooterComponent />) : (<></>) }
+      
     </div>
   );
 }

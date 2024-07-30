@@ -5,5 +5,9 @@ module.exports = (server) => {
 
     server
         .get("/getQuote", quoteController.getRandomQuote)
-        .post("/addCitation", quoteController.uploadCSV, quoteController.addQuote)
+        .get("/getAllQuotes", quoteController.getAllQuotes)
+        .put("/quotes/:id", quoteController.updateQuotes)
+        .post("/addCitation", quoteController.uploadCSV, quoteController.addQuoteCSV)
+        .post("/addQuote", quoteController.addQuote)
+        .delete("/quotes/:id", quoteController.deleteQuote)
 }

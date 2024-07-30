@@ -27,6 +27,7 @@ exports.parseFile = (filename) => {
     //         .on("error", function (error) {
     //             reject(error.message);
     //         });
+    
     return new Promise((resolve, reject) => {
         fs.createReadStream(filename)
             .pipe(parse({

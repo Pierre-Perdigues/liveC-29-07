@@ -7,6 +7,7 @@ function QuoteComponent(props) {
   useEffect(() => {
     getRandomQuote()
       .then((result) => {
+        console.log(result);
         return setQuote(result);
       })
       .catch(() => {
