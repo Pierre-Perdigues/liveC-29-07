@@ -13,25 +13,58 @@ exports.uploadCSV = upload.single('file');
 const CSV_STUDENTS = "students.csv";
 const CSV_TEACHERS = "intervenants.csv";
 
-// exports.getTodaysBirthday = async (req, res) => {
-//     const todaysDate = DateTime.now().setLocale('fr').toFormat('dd/LL'); //=> '2014 août 06'
+exports.getAllBirthday = async (req, res) => {
+  try {
+    // Récupérer toutes les citations
+    const birthday = await BirthdayMember.findAll();
+    if (birthday.length === 0) {
+      return res.status(404).json({ error: 'No quotes found' });
+    }
+    res.json(birthday);
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
+};
 
-//     const STUDENTS_BIRTHDAY = await parseService.parseFile(CSV_STUDENTS)
-//     .then(students => {
-//         return result = students.filter(student => student.birthday.startsWith(todaysDate));
-//     });
+exports.updateBirthday = async (req, res) => {
+  try {
+    // Récupérer toutes les citations
+    const birthday = await BirthdayMember.findByPk(req.params.id);
+    if (!birthday) {
+      throw new Error('Compte not found');
+    }
+    console.log(req.body);
+    await birthday.update(req.body)
+    res.json(birthday);
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
+};
 
-//     const TEACHERS_BIRTHDAY = await parseService.parseFile(CSV_TEACHERS)
-//     .then(students => {
-//         return result = students.filter(student => student.birthday.startsWith(todaysDate));
-//     });
+exports.deleteBirthday = async (req, res) => {
+  try {
+    // Récupérer toutes les citations
+    const birthday = await BirthdayMember.findByPk(req.params.id);
+    if (!birthday) {
+      throw new Error('Compte not found');
+    }
+    await birthday.destroy()
+    res.json("delete");
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
+};
 
-//     res.json({
-//         count_total: STUDENTS_BIRTHDAY.length + TEACHERS_BIRTHDAY.length,
-//         students_birthday : STUDENTS_BIRTHDAY,
-//         teachers_birthday : TEACHERS_BIRTHDAY
-//     })
-// }
+exports.addBirthday = async (req, res) => {
+  try {
+    console.log(req.body);
+    await BirthdayMember.create(req.body);
+    res.status(200).json('create');
+  } catch (error) {
+    console.log(error);
+    res.status(500).send('Error processing file');
+  }
+};
 
 exports.getTodaysBirthday = async (req, res) => {
   try {
@@ -57,7 +90,7 @@ exports.getTodaysBirthday = async (req, res) => {
   
   
 
-exports.addBirthday = async (req, res) => {
+exports.addBirthdayCSV = async (req, res) => {
     if (!req.file) {
         return res.status(400).send('No file uploaded.');
       }

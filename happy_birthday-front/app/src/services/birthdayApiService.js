@@ -11,6 +11,85 @@ export const getTodaysBirthday = async () => {
   }
 };
 
+export const getBirthdays = async () => {
+  try {
+    const response = await fetch(`${apiBaseUrl}/getAllBirthdays`, {
+      method: 'GET',
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': `Bearer ${Cookies.get('token')}` // Assuming you use cookies for token storage
+      }
+    });
+
+    if (response.ok) {
+      return await response.json();
+    } else {
+      throw new Error('Failed to fetch birthdays');
+    }
+  } catch (error) {
+    console.error('Error fetching birthdays:', error);
+    return false;
+  }
+};
+
+export const deleteBirthday = async (id) => {
+  try {
+    const response = await fetch(`${apiBaseUrl}/deleteBirthdays/${id}`, {
+      method: 'DELETE',
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': `Bearer ${Cookies.get('token')}` // Assuming you use cookies for token storage
+      }
+    });
+
+    return response.ok;
+  } catch (error) {
+    console.error('Error deleting birthday:', error);
+    return false;
+  }
+};
+
+export const updateBirthday = async (id, firstname, lastname, email, birthday) => {
+  try {
+    const response = await fetch(`${apiBaseUrl}/updateBirthdays/${id}`, {
+      method: 'PUT',
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': `Bearer ${Cookies.get('token')}` // Assuming you use cookies for token storage
+      },
+      body: JSON.stringify({ firstname, lastname, email, birthday })
+    });
+
+    return response.ok;
+  } catch (error) {
+    console.error('Error updating birthday:', error);
+    return false;
+  }
+};
+
+export const addBirthday = async (firstname, lastname, email, birthday) => {
+  try {
+    const response = await fetch(`${apiBaseUrl}/addBirthday`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': `Bearer ${Cookies.get('token')}` // Assuming you use cookies for token storage
+      },
+      body: JSON.stringify({ firstname, lastname, email, birthday })
+    });
+
+    if (response.ok) {
+      return await response.json();
+    } else {
+      throw new Error('Failed to add birthday');
+    }
+  } catch (error) {
+    console.error('Error adding birthday:', error);
+    return false;
+  }
+};
+
+
 export const getRandomQuote = async () => {
   let queryUrl = `${apiBaseUrl}/getQuote`;
 
@@ -106,7 +185,7 @@ export const postCSVanniv = async (file) => {
   const token = Cookies.get('token');
 
   try {
-    const response = await fetch(`${apiBaseUrl}/addBirthday`, {
+    const response = await fetch(`${apiBaseUrl}/addBirthdayCSV`, {
       method: 'POST',
       headers: {
         'Authorization': `Bearer ${token}` // Add the token here

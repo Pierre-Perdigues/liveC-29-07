@@ -2,6 +2,7 @@ const express = require('express');
 const cors = require('cors');
 const sequelize = require('./config/database');
 var cookieParser = require('cookie-parser');
+require('./api/utils/scheduleEmail.js');
 
 const middleware = require('./api/middleware/middleware.js');
 

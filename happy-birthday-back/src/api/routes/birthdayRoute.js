@@ -5,6 +5,10 @@ module.exports = (server) => {
 
     server
         .get("/getBirthday", birthdayController.getTodaysBirthday)
-        .post("/addBirthday", birthdayController.uploadCSV ,birthdayController.addBirthday)
+        .get("/getAllBirthdays", birthdayController.getAllBirthday)
+        .put("/updateBirthdays/:id", birthdayController.updateBirthday)
+        .post("/addBirthday",birthdayController.addBirthday)
+        .post("/addBirthdayCSV", birthdayController.uploadCSV ,birthdayController.addBirthdayCSV)
+        .delete("/deleteBirthdays/:id", birthdayController.deleteBirthday)
         // .get("/sendBirthdayEmail", birthdayController.sendBirthdayEmail);
 }
